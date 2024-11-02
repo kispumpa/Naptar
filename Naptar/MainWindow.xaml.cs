@@ -19,11 +19,13 @@ namespace Naptar
     /// </summary>
     public partial class MainWindow : Window
     {
+        List<Felhasznalo> profilok;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            List<Felhasznalo> profilok= new List<Felhasznalo>();
+            profilok= new List<Felhasznalo>();
             string jsonContent = File.ReadAllText("users.txt");
             if (jsonContent == string.Empty)
             {
@@ -48,12 +50,24 @@ namespace Naptar
 
         private void btn_modositas_Click(object sender, RoutedEventArgs e)
         {
-            
-            ModositoWindow mw = new ModositoWindow();
-            if (mw.ShowDialog() == true)
+            if (lb_kijelzo.SelectedItem != null)
             {
-                 
+                ModositoWindow mw = new ModositoWindow(lb_kijelzo.SelectedItem.ToString(), "random");
+                if (mw.ShowDialog() == true)
+                {
+
+                }
             }
+            else
+            {
+                ModositoWindow mw = new ModositoWindow();
+                if (mw.ShowDialog() == true)
+                {
+
+                }
+            }
+            
+            
         }
 
         private void btn_ujprofil_Click(object sender, RoutedEventArgs e)
@@ -68,7 +82,16 @@ namespace Naptar
 
             if (day != null)
             {
-                //open menu
+                foreach (Felhasznalo f in profilok)
+                {
+                    for (int i = 0; i < f.Esemenyek.Length; i++)
+                    {
+                        if (int.Parse(f.Esemenyek[i,0].Split('.')[0]) == ((DateTime)day.DataContext).Year && int.Parse(f.Esemenyek[i, 0].Split('.')[1]) == ((DateTime)day.DataContext).Month && int.Parse(f.Esemenyek[i, 0].Split('.')[2]) == ((DateTime)day.DataContext).Day)
+                        {
+                            lb_kijelzo.Items.Add(f.Esemenyek[i, 1]);
+                        }
+                    }
+                }
             }
             e.Handled = true;
         }

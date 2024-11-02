@@ -26,6 +26,11 @@ namespace Naptar
 
         }
 
+        public ModositoWindow(string nev, string datum)
+        {
+
+        }
+
         private void btn_modMentes_Click(object sender, RoutedEventArgs e)
         {
             
