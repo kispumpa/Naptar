@@ -1,0 +1,17 @@
+﻿<Window x:Class="Naptar.UjProfilWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Naptar"
+        mc:Ignorable="d"
+        Title="UjProfilWindow" Height="250" Width="400">
+    <Grid>
+        <StackPanel>
+            <Label Content="Profil név:" Grid.Row="0" Background="CadetBlue" FontSize="20" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="tb_profilnev" Grid.Row="1" Height="40" BorderBrush="Black" BorderThickness="1"/>
+            <Button x:Name="btn_profilmentes" Content="Mentés" Height="40" Width="100" Margin="40" FontSize="15" Click="btn_profilmentes_Click"/>
+        </StackPanel>
+        
+    </Grid>
+</Window>

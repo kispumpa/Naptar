@@ -1,0 +1,21 @@
+﻿<Window x:Class="Naptar.ModositoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Naptar"
+        mc:Ignorable="d"
+        Title="ModositoWindow" Height="400" Width="500">
+    <Grid>
+        <StackPanel>
+            <Label Content="Esemény név:" Background="CadetBlue" FontSize="20"/>
+            <TextBox x:Name="tb_esemenyNev" Height="40"/>
+            <Label Content="Dátum:" Background="CadetBlue" FontSize="20"/>
+            <CheckBox Content="Több nap" FontSize="15" Margin="10"/>
+            <DatePicker Margin="5"/>
+            <DatePicker Margin="5"/>
+
+            <Button x:Name="btn_modMentes" Content="Mentés" Height="40" Width="100" Margin="40" FontSize="15" Click="btn_modMentes_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
