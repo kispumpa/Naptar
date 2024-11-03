@@ -27,24 +27,6 @@ namespace Naptar
         {
             InitializeComponent();
 
-            #region sample
-            //profilok = new ObservableCollection<Felhasznalo>()
-            //{
-            //    new Felhasznalo(){Nev="Lajos", Esemenyek = new Esemeny[] {
-            //        new Esemeny() { Megnevezes = "Évforduló", Datum=new DateTime(2024, 11, 13, 20, 15, 0)},
-            //        new Esemeny() { Megnevezes = "Dolgozat", Datum=new DateTime(2024, 11, 25, 8, 45, 0)} } },
-            //    new Felhasznalo(){Nev="Miklos", Esemenyek = new Esemeny[] {
-            //        new Esemeny() { Megnevezes = "Évforduló", Datum=new DateTime(2024, 11, 1, 20, 15, 0)},
-            //        new Esemeny() { Megnevezes = "Szülinap", Datum=new DateTime(2024, 11, 5, 8, 45, 0)} } }
-            //};
-            #endregion
-
-
-            //foreach (Felhasznalo f in profilok) //hozzáadja a profilokat a comboboxhoz
-            //{
-            //       cb_mentesek.Items.Add(f.Nev);
-            //}
-
             calendar.SelectionMode = CalendarSelectionMode.MultipleRange; //kijelölések miatt
             string jsonContent = File.ReadAllText("users.txt");
             if (jsonContent == string.Empty)
@@ -56,7 +38,7 @@ namespace Naptar
             else
             {
                 Deserialize("users.txt");
-                foreach (Felhasznalo f in profilok)
+                foreach (Felhasznalo f in profilok) //hozzáadja a profilokat
                 {
                     cb_mentesek.Items.Add(f.Nev);
                 }
@@ -65,8 +47,7 @@ namespace Naptar
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            Serialize("users.txt", profilok);
-            ;
+            Serialize("users.txt", profilok); //kilépéskor elmenti a változtatásokat
             base.OnClosing(e);
         }
         
@@ -139,6 +120,7 @@ namespace Naptar
 
         private void cb_mentesek_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            lb_kijelzo.Items.Clear();
             calendar.SelectedDates.Clear(); //törli az előző kijelölést
             foreach ( Felhasznalo f in profilok)
             {
