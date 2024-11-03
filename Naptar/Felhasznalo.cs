@@ -16,20 +16,12 @@ namespace Naptar
 			set { nev = value; }
 		}
 
-		//private DateTime[] datumok; //beírt esemény dátumok
+		private Esemeny[] esemenyek;
 
-		//public DateTime[] Datumok
-		//{
-		//	get { return datumok; }
-		//	set { datumok = value; }
-		//}
-
-        private string[,] esemenyek { get; set; }
-
-		public string[,] Esemenyek //1. oszlop: dátum, 2. oszlop esemény leírás
+		public Esemeny[] Esemenyek
 		{
 			get { return esemenyek; }
 			set { esemenyek = value; }
 		}
-    }
+	}
 }

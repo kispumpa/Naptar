@@ -31,7 +31,7 @@
         </Grid>
 
         <Viewbox Margin="10,-219,472,0" Height="651" VerticalAlignment="Top">
-            <Calendar HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,194,0,0" MouseDoubleClick="Calendar_MouseDoubleClick"/>
+            <Calendar x:Name="calendar" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,194,0,0" MouseDoubleClick="Calendar_MouseDoubleClick"/>
         </Viewbox>
 
         <ComboBox x:Name="cb_mentesek" HorizontalAlignment="Left" FontSize="20" SelectedIndex="0" Margin="10,10,0,0" VerticalAlignment="Top" Width="318" Height="45"/>
