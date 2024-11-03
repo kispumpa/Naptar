@@ -23,5 +23,5 @@ namespace Naptar
 			get { return esemenyek; }
 			set { esemenyek = value; }
 		}
-	}
+    }
 }

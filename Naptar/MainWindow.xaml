@@ -34,7 +34,7 @@
             <Calendar x:Name="calendar" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,194,0,0" MouseDoubleClick="Calendar_MouseDoubleClick"/>
         </Viewbox>
 
-        <ComboBox x:Name="cb_mentesek" HorizontalAlignment="Left" FontSize="20" SelectedIndex="0" Margin="10,10,0,0" VerticalAlignment="Top" Width="318" Height="45"/>
+        <ComboBox x:Name="cb_mentesek" HorizontalAlignment="Left" FontSize="20" Margin="10,10,0,0" VerticalAlignment="Top" Width="318" Height="45" SelectionChanged="cb_mentesek_SelectionChanged"/>
         <Button x:Name="btn_ujprofil" Content="Új profil" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Height="27" Width="138" FontSize="15" Click="btn_ujprofil_Click" />
 
     </Grid>

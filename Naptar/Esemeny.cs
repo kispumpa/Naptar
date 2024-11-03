@@ -23,6 +23,5 @@ namespace Naptar
 			get { return datum; }
 			set { datum = value; }
 		}
-
 	}
 }
