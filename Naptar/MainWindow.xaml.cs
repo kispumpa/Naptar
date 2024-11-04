@@ -81,7 +81,12 @@ namespace Naptar
 
         private void btn_ujprofil_Click(object sender, RoutedEventArgs e)
         {
-
+            string nev = "";
+            UjProfilWindow upw = new UjProfilWindow(ref nev);
+            if (upw.ShowDialog() == true)
+            {
+                Felhasznalo uj = new Felhasznalo() { Nev = nev};
+            }
         }
 
         private void Calendar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -94,11 +99,11 @@ namespace Naptar
             {
                 foreach (Felhasznalo f in profilok)
                 {
-                    for (int i = 0; i < f.Esemenyek.Length; i++)
+                    foreach (Esemeny es in f.Esemenyek)
                     {
-                        if (f.Esemenyek[i].Datum.Year == ((DateTime)day.DataContext).Year && f.Esemenyek[i].Datum.Month == ((DateTime)day.DataContext).Month && f.Esemenyek[i].Datum.Day == ((DateTime)day.DataContext).Day && cb_mentesek.SelectedValue == f.Nev)
+                        if (es.Datum.Year == ((DateTime)day.DataContext).Year && es.Datum.Month == ((DateTime)day.DataContext).Month && es.Datum.Day == ((DateTime)day.DataContext).Day && cb_mentesek.SelectedValue == f.Nev)
                         {
-                            lb_kijelzo.Items.Add($"{f.Esemenyek[i].Datum.Hour}:{f.Esemenyek[i].Datum.Minute} - {f.Esemenyek[i].Megnevezes}");
+                            lb_kijelzo.Items.Add($"{es.Datum.Hour}:{es.Datum.Minute} - {es.Megnevezes}");
                         }
                     }
                 }
@@ -126,9 +131,9 @@ namespace Naptar
             {
                 if (cb_mentesek.SelectedValue == f.Nev)
                 {
-                    for (int i = 0; i < f.Esemenyek.Length; i++)
+                    foreach (Esemeny es in f.Esemenyek)
                     {
-                        calendar.SelectedDates.Add(f.Esemenyek[i].Datum);
+                        calendar.SelectedDates.Add(es.Datum);
                     }
                 }
             }

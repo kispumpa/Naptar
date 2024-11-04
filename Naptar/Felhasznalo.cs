@@ -16,9 +16,9 @@ namespace Naptar
 			set { nev = value; }
 		}
 
-		private Esemeny[] esemenyek;
+		private List<Esemeny> esemenyek;
 
-		public Esemeny[] Esemenyek
+		public List<Esemeny> Esemenyek
 		{
 			get { return esemenyek; }
 			set { esemenyek = value; }

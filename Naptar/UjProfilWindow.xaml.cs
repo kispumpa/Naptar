@@ -19,14 +19,17 @@ namespace Naptar
     /// </summary>
     public partial class UjProfilWindow : Window
     {
-        public UjProfilWindow()
+        public UjProfilWindow(ref string nev)
         {
             InitializeComponent();
         }
 
         private void btn_profilmentes_Click(object sender, RoutedEventArgs e)
         {
-
+            
+            
+            
+            this.DialogResult = true; //kilép
         }
     }
 }
