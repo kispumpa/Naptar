@@ -9,7 +9,7 @@
     <Grid>
         <StackPanel>
             <Label Content="Profil név:" Grid.Row="0" Background="CadetBlue" FontSize="20" VerticalContentAlignment="Center"/>
-            <TextBox x:Name="tb_profilnev" Grid.Row="1" Height="40" BorderBrush="Black" BorderThickness="1"/>
+            <TextBox x:Name="tb_profilnev" Grid.Row="1" Height="40" BorderBrush="Black" BorderThickness="1" VerticalContentAlignment="Center"/>
             <Button x:Name="btn_profilmentes" Content="Mentés" Height="40" Width="100" Margin="40" FontSize="15" Click="btn_profilmentes_Click"/>
         </StackPanel>
         

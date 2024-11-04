@@ -81,11 +81,12 @@ namespace Naptar
 
         private void btn_ujprofil_Click(object sender, RoutedEventArgs e)
         {
-            string nev = "";
-            UjProfilWindow upw = new UjProfilWindow(ref nev);
+            UjProfilWindow upw = new UjProfilWindow();
             if (upw.ShowDialog() == true)
             {
-                Felhasznalo uj = new Felhasznalo() { Nev = nev};
+                Felhasznalo uj = new Felhasznalo() { Nev = upw.Nev, Esemenyek = new List<Esemeny>()};
+                cb_mentesek.Items.Add(uj.Nev);
+                profilok.Add(uj);
             }
         }
 
