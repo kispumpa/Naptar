@@ -93,6 +93,9 @@ namespace Naptar
         private void Calendar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             lb_kijelzo.Items.Clear();
+            btn_modositas.Content = "Új esemény";
+            btn_modositas.IsEnabled = true;
+            btn_torles.IsEnabled = false;
             DependencyObject originalSource = e.OriginalSource as DependencyObject;
             CalendarDayButton day = FindParentOfType<CalendarDayButton>(originalSource); //kattintott nap, Datacontextbe teljes dátum
 
@@ -128,6 +131,8 @@ namespace Naptar
         {
             lb_kijelzo.Items.Clear();
             calendar.SelectedDates.Clear(); //törli az előző kijelölést
+            btn_torles.IsEnabled = false;
+            btn_modositas.IsEnabled = false;
             foreach ( Felhasznalo f in profilok)
             {
                 if (cb_mentesek.SelectedValue == f.Nev)
@@ -151,5 +156,10 @@ namespace Naptar
             profilok = JsonConvert.DeserializeObject<ObservableCollection<Felhasznalo>>(jsonContent);
         }
 
+        private void lb_kijelzo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            btn_modositas.Content = "Módosítás";
+            btn_torles.IsEnabled = true;
+        }
     }
 }
