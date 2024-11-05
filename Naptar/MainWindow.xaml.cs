@@ -22,6 +22,7 @@ namespace Naptar
     public partial class MainWindow : Window
     {
         public static ObservableCollection<Felhasznalo> profilok;
+        DateTime kivalasztott;
 
         public MainWindow()
         {
@@ -50,11 +51,43 @@ namespace Naptar
             Serialize("users.txt", profilok); //kilépéskor elmenti a változtatásokat
             base.OnClosing(e);
         }
-        
-        
+
+
         private void btn_torles_Click(object sender, RoutedEventArgs e)
         {
+            string fejlec = "Esemény törlés";
+            string uzenet = "Biztos törölni akarod ezt:" +
+                $"\n{lb_kijelzo.SelectedItem}";
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Warning;
+            MessageBoxResult valasz = MessageBox.Show(uzenet, fejlec, button, image, MessageBoxResult.Yes);
+            if (valasz == MessageBoxResult.Yes)
+            {
+                string esemeny = (string)lb_kijelzo.SelectedItem;
+                string[] split = esemeny.Split('-');
+                string[] oraperc = split[0].Trim().Split(':');
+                Esemeny torlendo;
+                bool talalt = false;
 
+                foreach (Felhasznalo f in profilok)
+                {
+                    foreach (Esemeny es in f.Esemenyek)
+                    {
+
+                        if (es.Datum.Year == kivalasztott.Year && es.Datum.Month == kivalasztott.Month && es.Datum.Day == kivalasztott.Day && es.Datum.Hour == int.Parse(oraperc[0]) && es.Datum.Minute == int.Parse(oraperc[1]) && cb_mentesek.SelectedValue == f.Nev)
+                        {
+                            f.Esemenyek.Remove(es);
+                            talalt = true;
+                            lb_kijelzo.Items.Remove(lb_kijelzo.SelectedItem);
+                            break;
+                        }
+                    }
+                    if (talalt == true)
+                    {
+                        break;
+                    }
+                }
+            }
         }
 
         private void btn_modositas_Click(object sender, RoutedEventArgs e)
@@ -84,7 +117,7 @@ namespace Naptar
             UjProfilWindow upw = new UjProfilWindow();
             if (upw.ShowDialog() == true)
             {
-                Felhasznalo uj = new Felhasznalo() { Nev = upw.Nev, Esemenyek = new List<Esemeny>()};
+                Felhasznalo uj = new Felhasznalo() { Nev = upw.Nev, Esemenyek = new List<Esemeny>() };
                 cb_mentesek.Items.Add(uj.Nev);
                 profilok.Add(uj);
             }
@@ -98,6 +131,7 @@ namespace Naptar
             btn_torles.IsEnabled = false;
             DependencyObject originalSource = e.OriginalSource as DependencyObject;
             CalendarDayButton day = FindParentOfType<CalendarDayButton>(originalSource); //kattintott nap, Datacontextbe teljes dátum
+            kivalasztott = (DateTime)day.DataContext;
 
             if (day != null)
             {
@@ -133,7 +167,7 @@ namespace Naptar
             calendar.SelectedDates.Clear(); //törli az előző kijelölést
             btn_torles.IsEnabled = false;
             btn_modositas.IsEnabled = false;
-            foreach ( Felhasznalo f in profilok)
+            foreach (Felhasznalo f in profilok)
             {
                 if (cb_mentesek.SelectedValue == f.Nev)
                 {
