@@ -23,6 +23,7 @@ namespace Naptar
     {
         public static ObservableCollection<Felhasznalo> profilok;
         DateTime kivalasztott;
+        DateTime ig;
 
         public MainWindow()
         {
@@ -94,7 +95,7 @@ namespace Naptar
         {
             if (lb_kijelzo.SelectedItem != null)
             {
-                ModositoWindow mw = new ModositoWindow(lb_kijelzo.SelectedItem.ToString(), "random");
+                ModositoWindow mw = new ModositoWindow((string)lb_kijelzo.SelectedItem, kivalasztott, ig);
                 if (mw.ShowDialog() == true)
                 {
 
@@ -102,10 +103,19 @@ namespace Naptar
             }
             else
             {
-                ModositoWindow mw = new ModositoWindow();
+                ModositoWindow mw = new ModositoWindow(kivalasztott);
                 if (mw.ShowDialog() == true)
                 {
+                    Esemeny uj = new Esemeny() { Megnevezes = mw.Nev, Datum = mw.Datumtol };
+                    foreach (Felhasznalo f in profilok)
+                    {
+                        if (cb_mentesek.SelectedValue == f.Nev)
+                        {
+                            f.Esemenyek.Add(uj);
+                            lb_kijelzo.Items.Add($"{uj.Datum.Hour}:{uj.Datum.Minute} - {uj.Megnevezes}");
+                        }
 
+                    }
                 }
             }
 
