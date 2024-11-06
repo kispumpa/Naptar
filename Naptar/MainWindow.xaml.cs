@@ -70,7 +70,7 @@ namespace Naptar
         }
         private void btn_modositas_Click(object sender, RoutedEventArgs e)
         {
-            if (lb_kijelzo.SelectedItem != null)
+            if (lb_kijelzo.SelectedItem != null) //esemény módosítás
             {
                 string[] split = ((string)lb_kijelzo.SelectedItem).Split('-');
                 string esemenyNev = split[1].Trim();
@@ -92,23 +92,46 @@ namespace Naptar
             }
             else
             {
-                ModositoWindow mw = new ModositoWindow(kivalasztott); //új elem
+                ModositoWindow mw = new ModositoWindow(kivalasztott); //új esemény
                 if (mw.ShowDialog() == true)
                 {
                     Esemeny uj = new Esemeny() { Megnevezes = mw.Nev, Datum = mw.Datumtol };
+                    if (mw.Datumig.Year != 0001)
+                    {
+                        ig = mw.Datumig;
+                    }
                     foreach (Felhasznalo f in profilok)
                     {
                         if (cb_mentesek.SelectedValue == f.Nev)
                         {
                             f.Esemenyek.Add(uj);
                             lb_kijelzo.Items.Add($"{uj.Datum.Hour}:{uj.Datum.Minute} - {uj.Megnevezes}");
+                            if (mw.Datumig.Year != 0001)
+                            {
+                                ;
+                                Esemeny vege = new Esemeny() { Megnevezes = mw.Nev + " esemény vége", Datum = mw.Datumig };
+                                f.Esemenyek.Add(vege);
+
+                                Esemeny potuj = new Esemeny() { Megnevezes = mw.Nev, Datum = new DateTime(mw.Datumtol.Year, mw.Datumtol.Month, mw.Datumtol.Day) };
+                                Esemeny potvege = new Esemeny() { Datum = new DateTime(mw.Datumig.Year, mw.Datumig.Month, mw.Datumig.Day) };
+                                long ticks = potvege.Datum.Ticks - potuj.Datum.Ticks;
+                                TimeSpan ts = new TimeSpan(ticks);
+                                if (ts.Days > 1)
+                                {
+                                    for (int i = 0; i < ts.Days - 1; i++)
+                                    {
+                                        potuj.Datum = potuj.Datum.AddDays(1);
+                                        DateTime novelo = potuj.Datum;
+                                        Esemeny ki = new Esemeny() { Megnevezes = mw.Nev, Datum = novelo };
+                                        f.Esemenyek.Add(ki);
+                                    }
+                                }
+                            }
                         }
 
                     }
                 }
             }
-
-
         }
         private void btn_ujprofil_Click(object sender, RoutedEventArgs e)
         {
@@ -126,6 +149,7 @@ namespace Naptar
             btn_modositas.Content = "Új esemény";
             btn_modositas.IsEnabled = true;
             btn_torles.IsEnabled = false;
+            EsemenyHighlight();
             DependencyObject originalSource = e.OriginalSource as DependencyObject;
             CalendarDayButton day = FindParentOfType<CalendarDayButton>(originalSource); //kattintott nap, Datacontextbe teljes dátum
             kivalasztott = (DateTime)day.DataContext;
@@ -157,16 +181,7 @@ namespace Naptar
             calendar.SelectedDates.Clear(); //törli az előző kijelölést
             btn_torles.IsEnabled = false;
             btn_modositas.IsEnabled = false;
-            foreach (Felhasznalo f in profilok)
-            {
-                if (cb_mentesek.SelectedValue == f.Nev)
-                {
-                    foreach (Esemeny es in f.Esemenyek)
-                    {
-                        calendar.SelectedDates.Add(es.Datum);
-                    }
-                }
-            }
+            EsemenyHighlight();
         }
         private void lb_kijelzo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -223,6 +238,19 @@ namespace Naptar
                 if (talalt == true)
                 {
                     break;
+                }
+            }
+        }
+        void EsemenyHighlight()
+        {
+            foreach (Felhasznalo f in profilok)
+            {
+                if (cb_mentesek.SelectedValue == f.Nev)
+                {
+                    foreach (Esemeny es in f.Esemenyek)
+                    {
+                        calendar.SelectedDates.Add(es.Datum);
+                    }
                 }
             }
         }
