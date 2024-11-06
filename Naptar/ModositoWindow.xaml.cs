@@ -50,7 +50,6 @@ namespace Naptar
             {
                 Datumig = (DateTime)dtp_ig.Value;
             }
-            ;
             this.DialogResult = true;
         }
     }

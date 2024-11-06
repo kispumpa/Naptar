@@ -53,6 +53,7 @@ namespace Naptar
             base.OnClosing(e);
         }
 
+        #region Clicks
 
         private void btn_torles_Click(object sender, RoutedEventArgs e)
         {
@@ -64,46 +65,34 @@ namespace Naptar
             MessageBoxResult valasz = MessageBox.Show(uzenet, fejlec, button, image, MessageBoxResult.Yes);
             if (valasz == MessageBoxResult.Yes)
             {
-                string esemeny = (string)lb_kijelzo.SelectedItem;
-                string[] split = esemeny.Split('-');
-                string[] oraperc = split[0].Trim().Split(':');
-                Esemeny torlendo;
-                bool talalt = false;
-
-                foreach (Felhasznalo f in profilok)
-                {
-                    foreach (Esemeny es in f.Esemenyek)
-                    {
-
-                        if (es.Datum.Year == kivalasztott.Year && es.Datum.Month == kivalasztott.Month && es.Datum.Day == kivalasztott.Day && es.Datum.Hour == int.Parse(oraperc[0]) && es.Datum.Minute == int.Parse(oraperc[1]) && cb_mentesek.SelectedValue == f.Nev)
-                        {
-                            f.Esemenyek.Remove(es);
-                            talalt = true;
-                            lb_kijelzo.Items.Remove(lb_kijelzo.SelectedItem);
-                            break;
-                        }
-                    }
-                    if (talalt == true)
-                    {
-                        break;
-                    }
-                }
+                EsemenyTorles();
             }
         }
-
         private void btn_modositas_Click(object sender, RoutedEventArgs e)
         {
             if (lb_kijelzo.SelectedItem != null)
             {
-                ModositoWindow mw = new ModositoWindow((string)lb_kijelzo.SelectedItem, kivalasztott, ig);
+                string[] split = ((string)lb_kijelzo.SelectedItem).Split('-');
+                string esemenyNev = split[1].Trim();
+                ModositoWindow mw = new ModositoWindow(esemenyNev, kivalasztott, ig);
                 if (mw.ShowDialog() == true)
                 {
+                    Esemeny uj = new Esemeny() { Megnevezes = mw.Nev, Datum = mw.Datumtol };
+                    foreach (Felhasznalo f in profilok)
+                    {
+                        if (cb_mentesek.SelectedValue == f.Nev)
+                        {
+                            f.Esemenyek.Add(uj);
+                            lb_kijelzo.Items.Add($"{uj.Datum.Hour}:{uj.Datum.Minute} - {uj.Megnevezes}");
+                            EsemenyTorles();
+                        }
 
+                    }
                 }
             }
             else
             {
-                ModositoWindow mw = new ModositoWindow(kivalasztott);
+                ModositoWindow mw = new ModositoWindow(kivalasztott); //új elem
                 if (mw.ShowDialog() == true)
                 {
                     Esemeny uj = new Esemeny() { Megnevezes = mw.Nev, Datum = mw.Datumtol };
@@ -121,7 +110,6 @@ namespace Naptar
 
 
         }
-
         private void btn_ujprofil_Click(object sender, RoutedEventArgs e)
         {
             UjProfilWindow upw = new UjProfilWindow();
@@ -132,7 +120,6 @@ namespace Naptar
                 profilok.Add(uj);
             }
         }
-
         private void Calendar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             lb_kijelzo.Items.Clear();
@@ -159,17 +146,10 @@ namespace Naptar
             e.Handled = true;
         }
 
-        public static T FindParentOfType<T>(DependencyObject source) where T : DependencyObject
-        {
-            T ret = default(T);
-            DependencyObject parent = VisualTreeHelper.GetParent(source);
 
-            if (parent != null)
-            {
-                ret = parent as T ?? FindParentOfType<T>(parent) as T;
-            }
-            return ret;
-        }
+        #endregion
+
+        #region SelectionChanges
 
         private void cb_mentesek_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -188,22 +168,66 @@ namespace Naptar
                 }
             }
         }
+        private void lb_kijelzo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            btn_modositas.Content = "Módosítás";
+            btn_torles.IsEnabled = true;
+        }
+
+        #endregion
+
+        #region segéd metódusok
 
         static void Serialize(string filename, ObservableCollection<Felhasznalo> list)
         {
             string jsonContent = JsonConvert.SerializeObject(list);
             File.WriteAllText(filename, jsonContent);
         }
-        public static void Deserialize(string filename)
+        static void Deserialize(string filename)
         {
             string jsonContent = File.ReadAllText(filename);
             profilok = JsonConvert.DeserializeObject<ObservableCollection<Felhasznalo>>(jsonContent);
         }
-
-        private void lb_kijelzo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        static T FindParentOfType<T>(DependencyObject source) where T : DependencyObject
         {
-            btn_modositas.Content = "Módosítás";
-            btn_torles.IsEnabled = true;
+            T ret = default(T);
+            DependencyObject parent = VisualTreeHelper.GetParent(source);
+
+            if (parent != null)
+            {
+                ret = parent as T ?? FindParentOfType<T>(parent) as T;
+            }
+            return ret;
         }
+        void EsemenyTorles()
+        {
+            string esemeny = (string)lb_kijelzo.SelectedItem;
+            string[] split = esemeny.Split('-');
+            string[] oraperc = split[0].Trim().Split(':');
+            Esemeny torlendo;
+            bool talalt = false;
+
+            foreach (Felhasznalo f in profilok)
+            {
+                foreach (Esemeny es in f.Esemenyek)
+                {
+
+                    if (es.Datum.Year == kivalasztott.Year && es.Datum.Month == kivalasztott.Month && es.Datum.Day == kivalasztott.Day && es.Datum.Hour == int.Parse(oraperc[0]) && es.Datum.Minute == int.Parse(oraperc[1]) && cb_mentesek.SelectedValue == f.Nev)
+                    {
+                        f.Esemenyek.Remove(es);
+                        talalt = true;
+                        lb_kijelzo.Items.Remove(lb_kijelzo.SelectedItem);
+                        break;
+                    }
+                }
+                if (talalt == true)
+                {
+                    break;
+                }
+            }
+        }
+
+        #endregion
+
     }
 }
