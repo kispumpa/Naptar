@@ -28,9 +28,16 @@ namespace Naptar
 
         private void btn_profilmentes_Click(object sender, RoutedEventArgs e)
         {
-            Nev = tb_profilnev.Text;
-            
-            this.DialogResult = true; //kilép
+            if (tb_profilnev.Text == "")
+            {
+                MessageBox.Show("Név megadása kötelező!", "Név hiba", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                Nev = tb_profilnev.Text;
+
+                this.DialogResult = true; //kilép
+            }
         }
     }
 }

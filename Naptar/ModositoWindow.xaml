@@ -9,7 +9,7 @@
     <Grid>
         <StackPanel>
             <Label Content="Esemény név:" Background="CadetBlue" FontSize="20"/>
-            <TextBox x:Name="tb_esemenyNev" Height="40" VerticalAlignment="Center"/>
+            <TextBox x:Name="tb_esemenyNev" Height="40" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
             <Label Content="Dátum:" Background="CadetBlue" FontSize="20"/>
             <CheckBox x:Name="cb_tobbnap" Content="Több nap" FontSize="15" Margin="10"/>
             <xctk:DateTimePicker x:Name="dtp_tol" Margin="5"/>

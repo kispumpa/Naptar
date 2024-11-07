@@ -44,13 +44,32 @@ namespace Naptar
 
         private void btn_modMentes_Click(object sender, RoutedEventArgs e)
         {
-            Nev = tb_esemenyNev.Text;
-            Datumtol = (DateTime)dtp_tol.Value;
-            if (cb_tobbnap.IsChecked == true)
+            if (tb_esemenyNev.Text == "")
             {
-                Datumig = (DateTime)dtp_ig.Value;
+                MessageBox.Show("Név megadása kötelező!", "Név hiba", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            this.DialogResult = true;
+            else if (tb_esemenyNev.Text.Contains('-'))
+            {
+                MessageBox.Show("A név nem tartalmazhat '-' karaktert!", "Név hiba", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (dtp_tol.Value is null)
+            {
+                MessageBox.Show("Dátum megadása kötelező!", "Dátum hiba", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if ( cb_tobbnap.IsChecked == true && dtp_ig.Value is null)
+            {
+                MessageBox.Show("Végdátum megadása kötelező! \n(Ha nem kell, üres legyen a checkbox)", "Dátum hiba", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                Nev = tb_esemenyNev.Text;
+                Datumtol = (DateTime)dtp_tol.Value;
+                if (cb_tobbnap.IsChecked == true)
+                {
+                    Datumig = (DateTime)dtp_ig.Value;
+                }
+                this.DialogResult = true;
+            }
         }
     }
 }
